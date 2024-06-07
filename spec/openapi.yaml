@@ -1,0 +1,95 @@
+openapi: 3.0.2
+servers:
+  - url: /v3
+    description: "Actual prod server"
+  - url: "http://localhost:3006/v3"
+    description: "For local development and Mockoon server"
+  - url: "http://localhost:3007/v3"
+    description: "Local Proxy to prod server"
+info:
+  description: >-
+    This is a sample Pet Store Server based on the OpenAPI 3.0 specification. 
+    You can find out more about
+
+    Swagger at [http://swagger.io](http://swagger.io). In the third iteration of
+    the pet store, we've switched to the design first approach!
+
+    You can now help us improve the API whether it's by making changes to the
+    definition itself or to the code.
+
+    That way, with time, we can improve the API in general, and expose some of
+    the new features in OAS3.
+
+
+    Some useful links:
+
+    - [The Pet Store
+    repository](https://github.com/swagger-api/swagger-petstore)
+
+    - [The source API definition for the Pet
+    Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+  version: 1.0.20-SNAPSHOT
+  title: Swagger Petstore - OpenAPI 3.0
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+tags:
+  - name: pet
+    description: Everything about your Pets
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
+  - name: store
+    description: Access to Petstore orders
+    externalDocs:
+      description: Find out more about our store
+      url: http://swagger.io
+  - name: user
+    description: Operations about user
+paths:
+  /pet:
+    $ref: paths/pet.yaml
+  /pet/findByStatus:
+    $ref: paths/pet/findByStatus.yaml
+  /pet/findByTags:
+    $ref: paths/pet/findByTags.yaml
+  /pet/{petId}:
+    $ref: paths/pet/{petId}.yaml
+  /pet/{petId}/uploadImage:
+    $ref: paths/pet/{petId}/uploadImage.yaml
+  /store/inventory:
+    $ref: paths/store/inventory.yaml
+  /store/order:
+    $ref: paths/store/order.yaml
+  /store/order/{orderId}:
+    $ref: paths/store/order/{orderId}.yaml
+  /user:
+    $ref: paths/user.yaml
+  /user/createWithList:
+    $ref: paths/user/createWithList.yaml
+  /user/login:
+    $ref: paths/user/login.yaml
+  /user/logout:
+    $ref: paths/user/logout.yaml
+  /user/{username}:
+    $ref: paths/user/{username}.yaml
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+components:
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

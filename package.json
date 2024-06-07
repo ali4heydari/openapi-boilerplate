@@ -1,0 +1,64 @@
+{
+  "name": "openapi-boilerplate",
+  "version": "0.1.0",
+  "description": "Multi-file boilerplate for Open API Specification.",
+  "type": "module",
+  "typings": "./dist/index.d.ts",
+  "exports": {
+    "./queries": {
+      "import": {
+        "types": "./dist/rq/queries/index.d.ts",
+        "default": "./dist/rq/queries/index.js"
+      }
+    },
+    "./reqeusts": {
+      "import": {
+        "types": "./dist/rq/reqeusts/index.d.ts",
+        "default": "./dist/rq/reqeusts/index.js"
+      }
+    },
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "scripts": {
+    "build": "pnpm build:spec && pnpm generate:rq && tsc",
+    "build:spec": "pnpm redocly bundle spec/openapi.yaml -o openapi.generated.yaml",
+    "lint": "pnpm build:spec && spectral lint ./openapi.generated.yaml",
+    "mock-api": "pnpm build:spec && mockoon-cli start --log-transaction  --data ./openapi.generated.yaml --port 8010",
+    "generate:rq": "pnpm openapi-rq -i openapi.generated.yaml -o generated/rq",
+    "proxy:dev": "pnpm lcp --port 3006 --proxyUrl http://127.0.0.1:8010 --proxyPartial \"\"",
+    "proxy:prod": "pnpm lcp --port 3007 --proxyUrl https://petstore.swagger.io/ --proxyPartial \"\"",
+    "proxy:mock-api": "concurrently --kill-others proxy mock-api",
+    "preview:redocly": "pnpm build:spec && redocly preview-docs ./openapi.generated.yaml",
+    "preview:swagger": "pnpm build:spec && cp ./openapi.generated.yaml node_modules/swagger-ui-dist/index.yaml && pnpm http-server node_modules/swagger-ui-dist",
+    "preview:with-mock-api": "concurrently --kill-others 'pnpm mock-api' 'pnpm proxy:dev' 'pnpm preview:swagger'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ali4heydari/openapi-boilerplate.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ali4heydari/openapi-boilerplate/issues"
+  },
+  "homepage": "https://github.com/ali4heydari/openapi-boilerplate#readme",
+  "dependencies": {
+    "@7nohe/openapi-react-query-codegen": "^1.4.1",
+    "@mockoon/cli": "^8.2.0",
+    "@redocly/cli": "^1.14.0",
+    "@stoplight/spectral-cli": "^6.11.1",
+    "concurrently": "^8.2.2",
+    "http-server": "^14.1.1",
+    "local-cors-proxy": "^1.1.0",
+    "swagger-ui-dist": "^5.17.14",
+    "typescript": "^5.4.5",
+    "yaml": "^2.4.3"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.40.1"
+  }
+}

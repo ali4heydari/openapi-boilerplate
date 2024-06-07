@@ -1,0 +1,26 @@
+post:
+  tags:
+    - user
+  summary: Creates list of users with given input array
+  description: Creates list of users with given input array
+  x-swagger-router-controller: UserController
+  operationId: createUsersWithListInput
+  responses:
+    '200':
+      description: Successful operation
+      content:
+        application/xml:
+          schema:
+            $ref: ../../components/schemas/User.yaml
+        application/json:
+          schema:
+            $ref: ../../components/schemas/User.yaml
+    default:
+      description: successful operation
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            $ref: ../../components/schemas/User.yaml
