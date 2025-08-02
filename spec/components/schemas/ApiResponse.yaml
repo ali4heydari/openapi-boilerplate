@@ -7,5 +7,5 @@ properties:
   message:
     type: string
 xml:
-  name: '##default'
+  name: "##default"
 type: object

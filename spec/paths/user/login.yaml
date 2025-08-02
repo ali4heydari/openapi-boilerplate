@@ -2,7 +2,7 @@ get:
   tags:
     - user
   summary: Logs user into the system
-  description: ''
+  description: ""
   operationId: loginUser
   parameters:
     - name: username
@@ -18,7 +18,7 @@ get:
       schema:
         type: string
   responses:
-    '200':
+    "200":
       description: successful operation
       headers:
         X-Rate-Limit:
@@ -38,5 +38,5 @@ get:
         application/json:
           schema:
             type: string
-    '400':
+    "400":
       description: Invalid username/password supplied

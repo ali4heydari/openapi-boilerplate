@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import {Config} from "release-it";
+import { Config } from "release-it";
 
 /**
  * @type {Config}
@@ -26,11 +26,17 @@ const config = {
     "@j-ulrich/release-it-regex-bumper": {
       out: [
         {
-          files: ["spec/openapi.yaml", "redocly.config.yaml", "README.md", "README.md", "README.md"],
+          files: [
+            "spec/openapi.yaml",
+            "redocly.config.yaml",
+            "README.md",
+            "README.md",
+            "README.md",
+          ],
           search: "{{version}}",
           replace: "{{version}}",
         },
-      ]
+      ],
     },
   },
 };

@@ -6,7 +6,7 @@ post:
   x-swagger-router-controller: UserController
   operationId: createUsersWithListInput
   responses:
-    '200':
+    "200":
       description: Successful operation
       content:
         application/xml:
