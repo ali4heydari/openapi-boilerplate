@@ -1,0 +1,52 @@
+# This file instructs Redocly's linter to ignore the rules contained for specific parts of your API.
+# See https://redocly.com/docs/cli/ for more information.
+spec/openapi.yaml:
+  no-server-example.com:
+    - "#/servers/1/url"
+    - "#/servers/2/url"
+spec/paths/pet/{petId}.yaml:
+  operation-2xx-response:
+    - "#/post/responses"
+    - "#/delete/responses"
+spec/paths/pet/{petId}/uploadImage.yaml:
+  operation-4xx-response:
+    - "#/post/responses"
+spec/paths/store/inventory.yaml:
+  operation-4xx-response:
+    - "#/get/responses"
+spec/paths/store/order/{orderId}.yaml:
+  operation-2xx-response:
+    - "#/delete/responses"
+  security-defined:
+    - "#/get"
+    - "#/delete"
+spec/paths/user.yaml:
+  operation-4xx-response:
+    - "#/post/responses"
+  security-defined:
+    - "#/post"
+spec/paths/user/createWithList.yaml:
+  operation-4xx-response:
+    - "#/post/responses"
+  security-defined:
+    - "#/post"
+spec/paths/user/logout.yaml:
+  operation-4xx-response:
+    - "#/get/responses"
+  security-defined:
+    - "#/get"
+spec/paths/user/{username}.yaml:
+  operation-4xx-response:
+    - "#/put/responses"
+  operation-2xx-response:
+    - "#/delete/responses"
+  security-defined:
+    - "#/get"
+    - "#/put"
+    - "#/delete"
+spec/paths/store/order.yaml:
+  security-defined:
+    - "#/post"
+spec/paths/user/login.yaml:
+  security-defined:
+    - "#/get"

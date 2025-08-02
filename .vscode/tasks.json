@@ -1,0 +1,294 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-and-lint",
+      "detail": "Build and lint OpenAPI specification files",
+      "group": "build",
+      "dependsOn": ["lint", "build"],
+      "dependsOrder": "parallel",
+      "problemMatcher": [],
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "silent",
+        "revealProblems": "onProblem"
+      }
+    },
+    {
+      "label": "build",
+      "detail": "Complete project build including documentation, Postman, and OpenAPI files",
+      "group": "build",
+      "dependsOn": ["build:openapi", "build:docs", "build:postman"],
+      "problemMatcher": []
+    },
+    {
+      "label": "build:docs",
+      "detail": "Generate all documentation (Redocly and Swagger)",
+      "group": "build",
+      "dependsOn": ["build:swagger:api-docs", "build:redocly:api-docs"],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    },
+    {
+      "label": "build:redocly:api-docs",
+      "detail": "Generate API documentation using Redocly",
+      "type": "npm",
+      "group": "build",
+      "script": "build:redocly:api-docs",
+      "problemMatcher": []
+    },
+    {
+      "label": "build:swagger:api-docs",
+      "detail": "Generate API documentation using Swagger",
+      "type": "npm",
+      "group": "build",
+      "script": "build:swagger:api-docs",
+      "dependsOn": ["bundle:openapi"],
+      "problemMatcher": []
+    },
+    {
+      "label": "build:postman",
+      "detail": "Build Postman collection",
+      "type": "npm",
+      "script": "build:postman",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "bundle:openapi",
+      "detail": "Generate all OpenAPI specification files",
+      "dependsOrder": "parallel",
+      "group": "build",
+      "dependsOn": ["bundle:redocly:json", "bundle:redocly:yaml"],
+      "problemMatcher": []
+    },
+    {
+      "label": "bundle:json",
+      "detail": "Generate OpenAPI specification in JSON format using Redocly",
+      "type": "npm",
+      "group": "build",
+      "script": "bundle:json",
+      "problemMatcher": {
+        "owner": "redocly",
+        "source": "Redocly Bundler",
+        "pattern": {
+          "regexp": "^\\[(\\d+)\\] ([^:]+):(\\d+):(\\d+) at (.+)$",
+          "code": 1,
+          "file": 2,
+          "line": 3,
+          "column": 4,
+          "message": 5
+        },
+        "severity": "warning"
+      }
+    },
+    {
+      "label": "bundle:yaml",
+      "detail": "Generate OpenAPI specification in YAML format using Redocly",
+      "type": "npm",
+      "group": "build",
+      "script": "bundle:redocly:yaml",
+      "problemMatcher": {
+        "owner": "redocly-bundler",
+        "source": "Redocly Bundler",
+        "pattern": {
+          "regexp": "^\\[(\\d+)\\] ([^:]+):(\\d+):(\\d+) at (.+)$",
+          "code": 1,
+          "file": 2,
+          "line": 3,
+          "column": 4,
+          "message": 5
+        },
+        "severity": "warning"
+      }
+    },
+    {
+      "label": "lint:eslint",
+      "detail": "Run ESLint checks",
+      "type": "npm",
+      "script": "lint:eslint",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "lint:eslint:fix",
+      "detail": "Run ESLint checks and fix the fixable issues",
+      "type": "npm",
+      "script": "lint:eslint:fix",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "lint:redocly",
+      "detail": "Run Redocly linting checks",
+      "type": "npm",
+      "group": "test",
+      "script": "lint",
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "silent",
+        "revealProblems": "onProblem"
+      },
+      "problemMatcher": {
+        "owner": "redocly-linter",
+        "source": "Redocly Linter",
+        "applyTo": "allDocuments",
+        "background": {
+          "beginsPattern": "^validating (.+)\\.ya?ml$",
+          "endsPattern": "^(.+)\\.ya?ml: validated in \\d+ms$"
+        },
+        "pattern": {
+          "regexp": "^::([^\\s]+)\\s+title=([^,]+),file=([^,]+),line=(\\d+),col=(\\d+),endLine=(\\d+),endColumn=(\\d+)::(.+)$",
+          "severity": 1,
+          "code": 2,
+          "file": 3,
+          "line": 4,
+          "column": 5,
+          "endLine": 6,
+          "endColumn": 7,
+          "message": 8
+        }
+      }
+    },
+    {
+      "label": "preview:redocly",
+      "detail": "Open API documentation preview using Redocly",
+      "type": "npm",
+      "script": "preview:redocly",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "preview:swagger",
+      "detail": "Open Swagger documentation in a new panel (requires OpenAPI files to be generated)",
+      "type": "npm",
+      "script": "preview:swagger",
+      "dependsOn": ["bundle:openapi"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "report",
+      "detail": "Generate API documentation statistics using Redocly",
+      "type": "npm",
+      "script": "report",
+      "problemMatcher": []
+    },
+    {
+      "label": "dev:bundle",
+      "detail": "Watch and rebuild OpenAPI specification files on changes",
+      "type": "npm",
+      "script": "dev:bundle",
+      "group": "build",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "dev:bundle:json",
+      "detail": "Watch and rebuild Redocly JSON specification on changes",
+      "type": "npm",
+      "script": "dev:bundle:json",
+      "group": "build",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "dev:bundle:yaml",
+      "detail": "Watch and rebuild Redocly YAML specification on changes",
+      "type": "npm",
+      "script": "dev:bundle:yaml",
+      "group": "build",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "dev:lint",
+      "detail": "Run ESLint checks in watch mode",
+      "dependsOn": ["dev:lint:eslint", "dev:lint:redocly"],
+      "dependsOrder": "parallel",
+      "runOptions": {
+        "instanceLimit": 1,
+        "runOn": "folderOpen"
+      },
+      "group": "test",
+      "isBackground": true
+    },
+    {
+      "label": "dev:lint:eslint",
+      "detail": "Run ESLint checks in watch mode",
+      "type": "npm",
+      "script": "dev:lint:eslint",
+      "group": "test",
+      "isBackground": true,
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "dev:lint:redocly",
+      "detail": "Watch and run Redocly linting on changes",
+      "type": "npm",
+      "script": "dev:lint:redocly",
+      "group": "test",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "redocly-linter",
+        "source": "Redocly Linter",
+        "applyTo": "allDocuments",
+        "background": {
+          "beginsPattern": "^\\[nodemon\\] starting .*$",
+          "endsPattern": "^\\[nodemon\\] (app crashed - waiting for file changes before starting\\.\\.\\.|clean exit - waiting for changes before restart)$"
+        },
+        "pattern": {
+          "regexp": "^::([^\\s]+)\\s+title=([^,]+),file=([^,]+),line=(\\d+),col=(\\d+),endLine=(\\d+),endColumn=(\\d+)::(.+)$",
+          "severity": 1,
+          "code": 2,
+          "file": 3,
+          "line": 4,
+          "column": 5,
+          "endLine": 6,
+          "endColumn": 7,
+          "message": 8
+        }
+      }
+    },
+    {
+      "label": "release",
+      "detail": "Releases a new version",
+      "type": "npm",
+      "script": "release",
+      "problemMatcher": []
+    },
+    {
+      "label": "release:patch",
+      "detail": "Releases a new patch version",
+      "type": "npm",
+      "script": "release:patch",
+      "problemMatcher": []
+    },
+    {
+      "label": "release:minor",
+      "detail": "Releases a new minor version",
+      "type": "npm",
+      "script": "release:minor",
+      "problemMatcher": []
+    },
+    {
+      "label": "release:major",
+      "detail": "Releases a new major version",
+      "type": "npm",
+      "script": "release:major",
+      "problemMatcher": []
+    }
+  ]
+}

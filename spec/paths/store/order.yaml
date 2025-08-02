@@ -6,13 +6,13 @@ post:
   operationId: placeOrder
   x-swagger-router-controller: OrderController
   responses:
-    '200':
+    "200":
       description: successful operation
       content:
         application/json:
           schema:
             $ref: ../../components/schemas/Order.yaml
-    '405':
+    "405":
       description: Invalid input
   requestBody:
     content:

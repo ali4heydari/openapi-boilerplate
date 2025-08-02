@@ -1,0 +1,13 @@
+# See https://redocly.com/docs/cli/configuration/ for more information.
+apis:
+  awsome-project@v2.0.0:
+    root: ./spec/openapi.yaml
+    output: ./build/openapi.generated.yaml
+extends:
+  - recommended
+theme:
+  openapi:
+    theme:
+      colors:
+        primary:
+          main: "#32329f"

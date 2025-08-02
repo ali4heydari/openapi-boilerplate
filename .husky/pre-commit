@@ -1,0 +1,2 @@
+pnpm lint:redocly
+pnpm lint-staged

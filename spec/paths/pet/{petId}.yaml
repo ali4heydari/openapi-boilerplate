@@ -13,7 +13,7 @@ get:
         type: integer
         format: int64
   responses:
-    '200':
+    "200":
       description: successful operation
       content:
         application/xml:
@@ -22,9 +22,9 @@ get:
         application/json:
           schema:
             $ref: ../../components/schemas/Pet.yaml
-    '400':
+    "400":
       description: Invalid ID supplied
-    '404':
+    "404":
       description: Pet not found
   security:
     - api_key: []
@@ -35,7 +35,7 @@ post:
   tags:
     - pet
   summary: Updates a pet in the store with form data
-  description: ''
+  description: ""
   operationId: updatePetWithForm
   parameters:
     - name: petId
@@ -56,7 +56,7 @@ post:
       schema:
         type: string
   responses:
-    '405':
+    "405":
       description: Invalid input
   security:
     - petstore_auth:
@@ -66,12 +66,12 @@ delete:
   tags:
     - pet
   summary: Deletes a pet
-  description: ''
+  description: ""
   operationId: deletePet
   parameters:
     - name: api_key
       in: header
-      description: ''
+      description: ""
       required: false
       schema:
         type: string
@@ -83,7 +83,7 @@ delete:
         type: integer
         format: int64
   responses:
-    '400':
+    "400":
       description: Invalid pet value
   security:
     - petstore_auth:

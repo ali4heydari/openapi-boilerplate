@@ -1,64 +1,76 @@
 {
-  "name": "openapi-boilerplate",
-  "version": "0.1.0",
+  "name": "@awsome-project/openapi",
+  "version": "2.0.0",
   "description": "Multi-file boilerplate for Open API Specification.",
   "type": "module",
-  "typings": "./dist/index.d.ts",
-  "exports": {
-    "./queries": {
-      "import": {
-        "types": "./dist/rq/queries/index.d.ts",
-        "default": "./dist/rq/queries/index.js"
-      }
-    },
-    "./reqeusts": {
-      "import": {
-        "types": "./dist/rq/reqeusts/index.d.ts",
-        "default": "./dist/rq/reqeusts/index.js"
-      }
-    },
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
-    }
-  },
+  "main": "./build/openapi.generated.json",
+  "module": "./build/openapi.generated.json",
   "scripts": {
-    "build": "pnpm build:spec && pnpm generate:rq && tsc",
-    "build:spec": "pnpm redocly bundle spec/openapi.yaml -o openapi.generated.yaml",
-    "lint": "pnpm build:spec && spectral lint ./openapi.generated.yaml",
-    "mock-api": "pnpm build:spec && mockoon-cli start --log-transaction  --data ./openapi.generated.yaml --port 8010",
-    "generate:rq": "pnpm openapi-rq -i openapi.generated.yaml -o generated/rq",
-    "proxy:dev": "pnpm lcp --port 3006 --proxyUrl http://127.0.0.1:8010 --proxyPartial \"\"",
-    "proxy:prod": "pnpm lcp --port 3007 --proxyUrl https://petstore.swagger.io/ --proxyPartial \"\"",
-    "proxy:mock-api": "concurrently --kill-others proxy mock-api",
-    "preview:redocly": "pnpm build:spec && redocly preview-docs ./openapi.generated.yaml",
-    "preview:swagger": "pnpm build:spec && cp ./openapi.generated.yaml node_modules/swagger-ui-dist/index.yaml && pnpm http-server node_modules/swagger-ui-dist",
-    "preview:with-mock-api": "concurrently --kill-others 'pnpm mock-api' 'pnpm proxy:dev' 'pnpm preview:swagger'"
+    "build": "pnpm bundle:openapi && concurrently \"pnpm build:docs\" \"pnpm build:postman\"",
+    "build:docs": "concurrently \"pnpm build:redocly:api-docs\" \"pnpm build:swagger:api-docs\"",
+    "build:postman": "node ./scripts/build-postman.js ./build/openapi.generated.yaml ./build/postman.generated.json",
+    "build:redocly:api-docs": "redocly build-docs --config redocly.config.yaml spec/openapi.yaml --output build/redocly-docs.html",
+    "build:swagger:api-docs": "shx cp swagger/index.html build/swagger-docs.html",
+    "bundle:json": "redocly bundle spec/openapi.yaml --ext json -o ./build/openapi.generated.json",
+    "bundle:openapi": "concurrently \"pnpm bundle:json\" \"pnpm bundle:yaml\"",
+    "bundle:yaml": "redocly bundle spec/openapi.yaml --ext yaml -o ./build/openapi.generated.yaml",
+    "dev:bundle": "nodemon --exec \"pnpm bundle:openapi\" --signal SIGINT",
+    "dev:bundle:json": "nodemon --exec \"pnpm bundle:json\" --signal SIGINT",
+    "dev:bundle:yaml": "nodemon --exec \"pnpm bundle:yaml\" --signal SIGINT",
+    "dev:lint:eslint": "nodemon --exec \"pnpm lint:eslint\" --signal SIGINT",
+    "dev:lint:redocly": "nodemon --exec \"pnpm lint:redocly\" --signal SIGINT",
+    "lint": "concurrently \"pnpm lint:eslint\" \"pnpm lint:redocly\"",
+    "lint:eslint": "eslint .",
+    "lint:eslint:fix": "eslint --fix .",
+    "lint:redocly": "redocly lint --max-problems 20000 --format github-actions --config redocly.config.yaml spec/openapi.yaml",
+    "prepare": "is-ci || husky",
+    "preview:redocly": "redocly preview-docs --config redocly.config.yaml --use-community-edition spec/openapi.yaml",
+    "preview:swagger": "shx cp swagger/index.html build/index.html && http-server build",
+    "release": "release-it",
+    "release:major": "release-it --increment=major --config .release-it.mjs",
+    "release:minor": "release-it --increment=minor --config .release-it.mjs",
+    "release:patch": "release-it --increment=patch --config .release-it.mjs",
+    "report": "redocly stats spec/openapi.yaml"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ali4heydari/openapi-boilerplate.git"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ali4heydari/openapi-boilerplate/issues"
-  },
-  "homepage": "https://github.com/ali4heydari/openapi-boilerplate#readme",
   "dependencies": {
-    "@7nohe/openapi-react-query-codegen": "^1.4.1",
-    "@mockoon/cli": "^8.2.0",
-    "@redocly/cli": "^1.14.0",
-    "@stoplight/spectral-cli": "^6.11.1",
-    "concurrently": "^8.2.2",
-    "http-server": "^14.1.1",
-    "local-cors-proxy": "^1.1.0",
-    "swagger-ui-dist": "^5.17.14",
-    "typescript": "^5.4.5",
-    "yaml": "^2.4.3"
+    "@redocly/cli": "^1.34.2",
+    "concurrently": "^9.1.2",
+    "is-ci": "^4.1.0",
+    "openapi-to-postmanv2": "^5.0.0",
+    "shx": "^0.4.0",
+    "yaml": "^2.7.1"
   },
-  "peerDependencies": {
-    "@tanstack/react-query": "^5.40.1"
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@eslint/js": "^9.25.1",
+    "@j-ulrich/release-it-regex-bumper": "^5.3.0",
+    "@release-it/bumper": "^7.0.5",
+    "@release-it/conventional-changelog": "^10.0.1",
+    "eslint": "^9.21.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-check-file": "^3.2.0",
+    "eslint-plugin-json-schema-validator": "^5.1.3",
+    "eslint-plugin-package-json": "^0.26.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-yml": "^1.17.0",
+    "globals": "^16.0.0",
+    "http-server": "^14.1.1",
+    "husky": "^9.1.7",
+    "jsonc-eslint-parser": "^2.4.0",
+    "lint-staged": "^15.5.1",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.5.3",
+    "release-it": "^19.0.1"
+  },
+  "packageManager": "pnpm@10.4.1",
+  "engines": {
+    "node": ">=22 <23",
+    "pnpm": ">=10 <11"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "core-js"
+    ]
   }
 }
