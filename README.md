@@ -3,7 +3,7 @@
 </div>
 
 <div align="center">
-![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
+![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 ![OpenAPI](https://img.shields.io/badge/-3.0.2-1A2C34?logo=openapiinitiative&logoColor=green&logoSize=auto)
 ![SemanticRelease](https://img.shields.io/badge/SemanticRelease-494949?logo=semanticrelease&logoColor=#494949&logoSize=auto)
@@ -238,7 +238,7 @@ To build Docker image simply run:
 
 ```bash
 docker build \
- -t awsome-project/openapi:0.1.0 \
+ -t awsome-project/openapi:2.0.0 \
  -f Dockerfile \
  .
 ```
@@ -250,7 +250,7 @@ To run docker container simply run:
 ```bash
 docker run \
  -p 8080:80 \
- awsome-project/openapi:0.1.0
+ awsome-project/openapi:2.0.0
 ```
 
 This will start a container and map port `8080` on your host machine to port `80` on the container.

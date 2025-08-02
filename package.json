@@ -1,6 +1,6 @@
 {
   "name": "@awsome-project/openapi",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "description": "Multi-file boilerplate for Open API Specification.",
   "type": "module",
   "main": "./build/openapi.generated.json",
