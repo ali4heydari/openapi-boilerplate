@@ -1,0 +1,2 @@
+DO NOT DELETE THIS FILE!
+The `bundle:sm:yaml` and `bundle:vacuum:yaml` scripts expect `build` folder to exist.

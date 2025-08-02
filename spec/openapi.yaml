@@ -1,11 +1,11 @@
 openapi: 3.0.2
 servers:
   - url: /v3
-    description: "Actual prod server"
+    description: Actual prod server
   - url: "http://localhost:3006/v3"
-    description: "For local development and Mockoon server"
+    description: For local development and Mockoon server
   - url: "http://localhost:3007/v3"
-    description: "Local Proxy to prod server"
+    description: Local Proxy to prod server
 info:
   description: >-
     This is a sample Pet Store Server based on the OpenAPI 3.0 specification. 
@@ -28,7 +28,7 @@ info:
 
     - [The source API definition for the Pet
     Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
-  version: 1.0.20-SNAPSHOT
+  version: 0.1.0
   title: Swagger Petstore - OpenAPI 3.0
   termsOfService: http://swagger.io/terms/
   contact:

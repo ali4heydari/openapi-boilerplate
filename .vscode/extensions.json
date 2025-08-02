@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "42Crunch.vscode-openapi",
+    "Redocly.openapi-vs-code",
+    "dbaeumer.vscode-eslint",
+    "ms-vscode-remote.remote-containers"
+  ]
+}
